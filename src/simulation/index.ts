@@ -38,7 +38,7 @@ class Simulation {
       this.orgMeterList,
       (meter) => meter.kwh < usageBorder
     );
-    sumOfSupplyKWH = _.sumBy(_filtered, (meter) => meter.kwh);
+    sumOfSupplyKWH = _.sumBy(_filtered, (meter) => usageBorder - meter.kwh);
 
     // Copy MeterList
     this.currentMeterList = this.orgMeterList.map((meter) =>
