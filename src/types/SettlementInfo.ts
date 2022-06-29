@@ -66,12 +66,15 @@ export class SettlementInfo {
     });
   }
 
-  static getRowHead = () =>
+  static getRowHead = (): string =>
     _.join(
-      _.map(
-        OBJECT_TO_COLUMNS_MATCHING,
-        (obj_to_col_mat) => obj_to_col_mat.name
-      ),
+      _.map(OBJECT_TO_COLUMNS_MATCHING, ({ name }) => name),
+      ","
+    );
+
+  getRow = () =>
+    _.join(
+      _.map(OBJECT_TO_COLUMNS_MATCHING, ({ key }, idx) => this[key]),
       ","
     );
 }
