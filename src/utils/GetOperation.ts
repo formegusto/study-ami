@@ -1,4 +1,53 @@
-export default function GetBuyerProfit(
+import _ from "lodash";
+import { AptMeterDataMonth, TradeResult } from "../types";
+import { CalculateResdnChargeByMonthHighVolt } from "./";
+import { ReactivePriceByTradeQty } from "./ReactivePriceByTradeQty";
+
+export function GetWholeAptCharge(
+  targetDate: Date,
+  wholeHouseholdUsage: number,
+  publicUsage: number,
+  numHousehold: number
+): number {
+  let resultVal: number = 0;
+  let avgWholeUsage: number =
+    (wholeHouseholdUsage + publicUsage) / numHousehold;
+  resultVal =
+    CalculateResdnChargeByMonthHighVolt(avgWholeUsage, targetDate, false) *
+    numHousehold;
+
+  return resultVal;
+}
+
+export function GetWholeHouseholdCharge(
+  targetDate: Date,
+  inputList: AptMeterDataMonth[]
+): number {
+  return _.sumBy(inputList, (meter) =>
+    CalculateResdnChargeByMonthHighVolt(meter.kwh, targetDate, false)
+  );
+}
+
+export function GetTradeResult(
+  inputMeter: AptMeterDataMonth,
+  tradeDate: Date,
+  idxNum: number,
+  tradeUnit: number
+): TradeResult {
+  const tradePriceWON: number = ReactivePriceByTradeQty(
+    tradeUnit,
+    inputMeter.kwh,
+    tradeDate
+  );
+  return new TradeResult(
+    idxNum,
+    tradeUnit,
+    tradePriceWON,
+    GetBuyerProfit(tradeDate, inputMeter.kwh, tradeUnit, tradePriceWON)
+  );
+}
+
+export function GetBuyerProfit(
   targetDate: Date,
   buyerUsageKWH: number,
   qtyKWH: number,
