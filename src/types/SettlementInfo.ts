@@ -58,10 +58,20 @@ export const OBJECT_TO_COLUMNS_MATCHING = [
 const KEYS = _.map(OBJECT_TO_COLUMNS_MATCHING, ({ key }) => key);
 
 export class SettlementInfo {
-  [key: string]: number;
+  [key: string]: any;
+
   constructor(...args: number[]) {
     args.forEach((arg, idx) => {
       this[KEYS[idx]] = arg;
     });
   }
+
+  static getRowHead = () =>
+    _.join(
+      _.map(
+        OBJECT_TO_COLUMNS_MATCHING,
+        (obj_to_col_mat) => obj_to_col_mat.name
+      ),
+      ","
+    );
 }
