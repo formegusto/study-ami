@@ -1,13 +1,15 @@
-import { AptMeterDataMonth } from "../types";
+import { AptMeterDataMonth, TradeResult } from "../types";
 import { readCsv } from "../utils";
 import BuyerSelectionByListIdx from "./BuyerSelectionByListIdx";
 import _ from "lodash";
+import GetTradeResult from "../utils/GetTradeResult";
 
 class Simulation {
   orgMeterList: AptMeterDataMonth[];
   currentMeterList?: AptMeterDataMonth[];
   targetDate: Date;
   unitKWHforTrade: number;
+  resultList?: TradeResult[];
 
   constructor(filePath: string) {
     const csvLines = readCsv(filePath);
@@ -22,6 +24,7 @@ class Simulation {
   }
 
   run() {
+    const resultList: TradeResult[] = [];
     let sumOfSupplyKWH = 0;
     let usageBorder = 0;
 
@@ -42,7 +45,27 @@ class Simulation {
       _.cloneDeep(meter)
     );
 
-    BuyerSelectionByListIdx.apply(this);
+    while (sumOfSupplyKWH > 0) {
+      const tmpTradeUnit =
+        sumOfSupplyKWH - this.unitKWHforTrade < 0
+          ? sumOfSupplyKWH
+          : this.unitKWHforTrade;
+
+      const buyerIdx = BuyerSelectionByListIdx.apply(this, [tmpTradeUnit]);
+      const buyer = this.currentMeterList[buyerIdx];
+      const result: TradeResult = GetTradeResult(
+        buyer,
+        this.targetDate,
+        buyerIdx,
+        tmpTradeUnit
+      );
+      resultList.push(result);
+
+      this.currentMeterList[buyerIdx].kwh -= this.unitKWHforTrade;
+      sumOfSupplyKWH -= this.unitKWHforTrade;
+    }
+
+    this.resultList = resultList;
   }
 }
 
