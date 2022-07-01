@@ -13,6 +13,7 @@ const savePath = path.join(
   __dirname,
   "..",
   "static",
+  "result",
   `result_${new Date().toISOString()}.csv`
 );
 saveCsv(simulation.settleMentList!, savePath);

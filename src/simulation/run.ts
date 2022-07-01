@@ -24,14 +24,23 @@ export default function run(this: Simulation) {
   // Copy MeterList
   this.currentMeterList = this.orgMeterList.map((meter) => _.cloneDeep(meter));
 
+  // let testCnt = 0;
   while (sumOfSupplyKWH > 0) {
+    // Simulation Trade Unit
+    // this.unitKWHforTrade = 5
+    // if (testCnt >= 60) break;
+
     const tmpTradeUnit =
       sumOfSupplyKWH - this.unitKWHforTrade < 0
         ? sumOfSupplyKWH
         : this.unitKWHforTrade;
 
+    // parsing household, max profit to prosumer
     const buyerIdx = BuyerSelectionByListIdx.apply(this, [tmpTradeUnit]);
     const buyer = this.currentMeterList[buyerIdx];
+
+    // Setting Result
+    // Set buyerProfit
     const result: TradeResult = GetTradeResult(
       buyer,
       this.targetDate,
@@ -39,9 +48,12 @@ export default function run(this: Simulation) {
       tmpTradeUnit
     );
     resultList.push(result);
+    // console.log(result);
 
     this.currentMeterList[buyerIdx].kwh -= this.unitKWHforTrade;
     sumOfSupplyKWH -= this.unitKWHforTrade;
+
+    // testCnt++;
   }
 
   this.resultList = resultList;
