@@ -62,12 +62,14 @@ export default function GetSettlementInfos(this: Simulation) {
     usageBorder = 300;
   else usageBorder = 200;
 
+  // 1. 구매자 정보 저장
   this.resultList.forEach((trade) => {
     // 총 거래요금
     tradeWON[trade.householdIndex] += trade.tradePriceWON * trade.tradeQtyKWH;
     // 절감 에너지
     reducedEnergy[trade.householdIndex] += trade.tradeQtyKWH;
   });
+  // 2. 판매자 정보 저장
   this.orgMeterList.forEach((info, idx) => {
     // 판 쪽, 거래에서 프로슈머의 역할자
     if (info.kwh < usageBorder) {
