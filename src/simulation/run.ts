@@ -20,7 +20,6 @@ export default function run(this: Simulation) {
     (meter) => meter.kwh < usageBorder
   );
   sumOfSupplyKWH = _.sumBy(_filtered, (meter) => usageBorder - meter.kwh);
-
   // Copy MeterList
   this.currentMeterList = this.orgMeterList.map((meter) => _.cloneDeep(meter));
 

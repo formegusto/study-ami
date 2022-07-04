@@ -10,6 +10,7 @@ export function GetWholeAptCharge(
   numHousehold: number
 ): number {
   let resultVal: number = 0;
+  // 아파트 전체 평균 사용량 계산
   let avgWholeUsage: number =
     (wholeHouseholdUsage + publicUsage) / numHousehold;
   resultVal =
