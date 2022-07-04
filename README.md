@@ -58,7 +58,7 @@ sumOfSupplyKWH = _.sumBy(_filtered, (meter) => usageBorder - meter.kwh);
 
 전력거래를 위한 수요함수는 1kWh당의 거래 가격이 낮을 수록 더 많은 거래를 진행한다는 의미의 모양을 가진다. 여기서 특정 거래 수량에 따른 가구별 선호 1kWh당 선호 가격은 아래의 공식에 의해 산정된다. ( 수요함수에 의해 도출되는 값들은 모든 수요자들이 특정 기간 내에 소비할 의사와 능력이 있고, 가격의 상승 하락에 따라 감소하고 증가하는 질이 동일한 재화나 서비스의 양을 만족한다는 조건하에 진행된다. )
 
-![Untitled](Energy%20Trading%20d8bfc7c7351c4069b504f445acee57ba/Untitled.png)
+![Untitled](https://user-images.githubusercontent.com/52296323/177087667-0edac6a5-72d8-46fc-a518-b48fcc8d982f.png)
 
 ```tsx
 // src/simulation/index.ts
@@ -176,7 +176,7 @@ export function GetBuyerProfit(
 
 구매자의 수익을 구하는 방법의 철학은 “내가(판매자) 1kWh당 현재 이만큼 내는데, 이 만큼에 팔게"로 시작한다. 그렇기 때문에 판매자의 판매 가격과 현재 판매자가 내고 있는 가격의 차를 priceMargin, 1kWh당 이득액으로 산정하고 qtyKWh, 거래단위를 곱하면 구매자의 이득액이 산정된다.
 
-![Untitled](Energy%20Trading%20d8bfc7c7351c4069b504f445acee57ba/Untitled%201.png)
+![Untitled 1](https://user-images.githubusercontent.com/52296323/177087687-2f1e64f3-fcd1-4614-ba86-763fdd0d058c.png)
 
 해당 방식을 이용하게 되면 사용량이 너무 많은 가구의 경우에는 오히려 판매자만 이득을 가지고 가는 형태가 되어버린다. 하지만 사용량이 많은 만큼 계속해서 시뮬레이션의 최대 가격을 가지고 있는 가구로 선정되어 거래가 많이 진행될 것 이기 때문에 후에는 양수의 값을 나타내는 모습을 확인할 수 있다.
 
