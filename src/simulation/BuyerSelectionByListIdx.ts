@@ -1,6 +1,5 @@
 import Simulation from ".";
 import _ from "lodash";
-import { AptMeterDataMonth } from "../types";
 import { ReactivePriceByTradeQty } from "../utils";
 
 const SELLER_PRICE = 73.3;

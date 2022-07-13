@@ -40,7 +40,7 @@ export default function GetSettlementInfos(this: Simulation) {
   );
   // 평균사용량
   const AvgUsageForEach = totalHouseholdUsage / this.orgMeterList.length;
-  // 고정값인듯, 공용부 사용량은 세대부의 25%
+  // 고정값인듯,  사용량은 세대부의 25%
   const publicUsage: number = totalHouseholdUsage * 0.25;
   // 아파트 전체 가격
   const wholeAptCharge = GetWholeAptCharge(

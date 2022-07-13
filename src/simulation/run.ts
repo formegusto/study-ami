@@ -20,15 +20,14 @@ export default function run(this: Simulation) {
     (meter) => meter.kwh < usageBorder
   );
   sumOfSupplyKWH = _.sumBy(_filtered, (meter) => usageBorder - meter.kwh);
+  console.log("sumOfSupplyKWH", sumOfSupplyKWH);
   // Copy MeterList
   this.currentMeterList = this.orgMeterList.map((meter) => _.cloneDeep(meter));
 
-  // let testCnt = 0;
+  let testCnt = 0;
   while (sumOfSupplyKWH > 0) {
     // Simulation Trade Unit
     // this.unitKWHforTrade = 5
-    // if (testCnt >= 60) break;
-
     const tmpTradeUnit =
       sumOfSupplyKWH - this.unitKWHforTrade < 0
         ? sumOfSupplyKWH
@@ -47,12 +46,11 @@ export default function run(this: Simulation) {
       tmpTradeUnit
     );
     resultList.push(result);
-    // console.log(result);
 
-    this.currentMeterList[buyerIdx].kwh -= this.unitKWHforTrade;
-    sumOfSupplyKWH -= this.unitKWHforTrade;
+    this.currentMeterList[buyerIdx].kwh -= tmpTradeUnit;
+    sumOfSupplyKWH -= tmpTradeUnit;
 
-    // testCnt++;
+    testCnt++;
   }
 
   this.resultList = resultList;
